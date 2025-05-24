@@ -6,7 +6,7 @@ services:
     region: oregon
     plan: free
     buildCommand: cd Backend && npm install
-    startCommand: cd Backend && npm start
+    startCommand: cd Backend && NODE_ENV=production npm start
     envVars:
       - key: NODE_ENV
         value: production
@@ -14,6 +14,7 @@ services:
         sync: false
       - key: PORT
         value: 8000
+    healthCheckPath: /api/health
 
   # Frontend service
   - type: web
@@ -25,4 +26,5 @@ services:
     startCommand: cd Frontend && npm run preview
     envVars:
       - key: VITE_API_URL
-        value: https://hostelhub-backend.onrender.com/api 
+        value: https://hostelhub-backend.onrender.com/api
+    healthCheckPath: / 
