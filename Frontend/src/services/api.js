@@ -2,11 +2,12 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json'
-    }
+    },
+    withCredentials: true
 });
 
 // Request interceptor for logging
@@ -27,13 +28,24 @@ api.interceptors.response.use(
         console.log(`✅ API Response: ${response.config.method?.toUpperCase()} ${response.config.url}`, response.data);
         return response;
     },
-    (error) => {
+    async (error) => {
         console.error('❌ API Response Error:', {
             message: error.message,
             status: error.response?.status,
             data: error.response?.data,
             url: error.config?.url
         });
+
+        // If the error is due to network issues, retry the request
+        if (!error.response && error.config && error.config.retryCount < 3) {
+            error.config.retryCount = error.config.retryCount || 0;
+            error.config.retryCount++;
+            
+            // Wait for 1 second before retrying
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            return api(error.config);
+        }
+
         return Promise.reject(error);
     }
 );
