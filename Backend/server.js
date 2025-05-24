@@ -38,11 +38,11 @@ app.use(limiter);
 // CORS configuration
 const corsOptions = {
     origin: process.env.NODE_ENV === 'production' 
-        ? ['https://hostelhub-frontend.onrender.com', 'http://localhost:8000', 'http://localhost:5173']
+        ? ['https://hostelhub-frontend.onrender.com', 'http://localhost:8000', 'http://localhost:5173', 'https://hostelhub.onrender.com']
         : ['http://localhost:5173', 'http://localhost:8000'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 };
 app.use(cors(corsOptions));
 
