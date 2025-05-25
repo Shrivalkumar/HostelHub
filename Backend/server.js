@@ -40,14 +40,14 @@ app.get('/api/health', (req, res) => {
 
 // Serve frontend static files in production
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(rootDir, "Frontend/dist")));
+    app.use(express.static(path.join(rootDir, "frontend/dist")));
     
     // Serve index.html for all non-API routes
     app.get('*', (req, res, next) => {
         if (req.path.startsWith('/api')) {
             return next();
         }
-        res.sendFile(path.join(rootDir, "Frontend/dist/index.html"));
+        res.sendFile(path.join(rootDir, "frontend/dist/index.html"));
     });
 }
 
