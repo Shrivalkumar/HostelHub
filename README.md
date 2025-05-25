@@ -6,7 +6,38 @@ HostelHub is a full-stack web application built for hostel residents to manage w
 
 🔗 **Live Demo:** https://hostel-hub-alpha.vercel.app/
 
-## 🚀 Features
+## 🚨 Problems We Solve
+
+### Current Issues Students Face:
+
+•⁠  ⁠🏃‍♂️ **Wasted Time**: Running to different floors only to find machines occupied
+
+•⁠  ⁠⏰ **No Real-time Updates**: Unable to check machine availability remotely
+
+•⁠  ⁠🤔 **Confusion**: Not knowing when machines will be free
+
+•⁠  ⁠📱 **Manual Tracking**: Difficulty in managing washing schedules
+
+•⁠  ⁠😤 **Conflicts**: Arguments over machine usage and booking priority
+
+•⁠  ⁠🔄 **Inefficient Resource Use**: Machines sitting idle while students wait elsewhere
+
+### Our Solution:
+
+•⁠  ⁠✅ **Real-time Monitoring**: Check machine status from your room
+
+•⁠  ⁠🎯 **Smart Booking**: Reserve machines in advance to avoid conflicts
+
+•⁠  ⁠📊 **Multi-floor Management**: View all machines across different floors in one place
+
+•⁠  ⁠🔄 **Live Updates**: Automatic refresh every 30 seconds
+
+•⁠  ⁠📱 **Mobile-friendly**: Access from any device, anywhere in the hostel
+
+•⁠  ⁠⏱️ **Session Tracking**: Monitor active washing cycles and completion times
+
+
+## 🚀 Current Features
 
 - ✅ **Real-time Status Tracking** – Live updates on machine availability every 30 seconds
 - 📅 **Smart Booking System** – Easily book and manage washing sessions
@@ -14,6 +45,38 @@ HostelHub is a full-stack web application built for hostel residents to manage w
 - ⏳ **Session Monitoring** – View active and completed washing sessions
 - 📱 **Fully Responsive** – Optimized for both desktop and mobile devices
 - 🔄 **Auto Refresh** – Seamless updates without needing a manual reload
+
+## 🚀 Future Features
+
+We're constantly working to improve HostelHub! Here's what's coming next:
+
+### 🔐 User Authentication System
+•⁠  ⁠*Admin Panel*: Dedicated dashboard for hostel management
+•⁠  ⁠*User Profiles*: Personalized accounts for each student
+•⁠  ⁠*Role-based Access*: Different permissions for admins and regular users
+
+### 📱 QR Code Integration
+•⁠  ⁠*Smart Machine Booking*: Each machine will have a unique QR code
+•⁠  ⁠*Quick Scan & Book*: 
+  - Scan QR → Automatically captures your name & phone number
+  - Auto-fills machine number → Select duration → Instant booking!
+•⁠  ⁠*Contactless Experience*: No manual form filling required
+
+### 🏠 Expanded Appliance Support
+•⁠  ⁠*Kitchen Appliances*: Book ovens, induction cooktops, and microwaves
+•⁠  ⁠*Multi-category Management*: Separate sections for different appliance types
+•⁠  ⁠*Appliance-specific Features*: Custom booking durations for different machines
+
+### ⏰ Advanced Booking Features
+•⁠  ⁠*Pre-booking System*: Reserve machines up to 24 hours in advance
+•⁠  ⁠*Recurring Bookings*: Set weekly washing schedules
+•⁠  ⁠*Smart Notifications*: Get alerts when your preferred time slots are available
+•⁠  ⁠*Queue Management*: Join waiting lists for popular time slots
+
+### 📊 Enhanced Analytics
+•⁠  ⁠*Usage Statistics*: Track your washing patterns and peak hours
+•⁠  ⁠*Hostel Insights*: Admin dashboard with usage analytics
+•⁠  ⁠*Predictive Availability*: AI-powered suggestions for best booking times
 
 ## 🛠️ Tech Stack
 
