@@ -1,9 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors'; 
-import helmet from 'helmet';
-import compression from 'compression';
-import rateLimit from 'express-rate-limit';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
