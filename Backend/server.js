@@ -17,6 +17,7 @@ const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 
 // Security middleware
 app.use(helmet({
@@ -38,13 +39,15 @@ app.use(limiter);
 // CORS configuration
 const corsOptions = {
     origin: process.env.NODE_ENV === 'production' 
-        ? ['https://hostelhub-frontend.onrender.com', 'http://localhost:8000', 'http://localhost:5173', 'https://hostelhub.onrender.com']
+        ? ['https://hostelhub-urdf.onrender.com', 'http://localhost:8000', 'http://localhost:5173']
         : ['http://localhost:5173', 'http://localhost:8000'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 };
 app.use(cors(corsOptions));
+
+
 
 // Body parser middleware
 app.use(express.json({ limit: '10mb' }));
@@ -70,22 +73,13 @@ app.get('/api/health', (req, res) => {
 app.use("/api/sessions", sessionRoutes);
 
 // Serve frontend static files in production
-if (process.env.NODE_ENV === 'production') {
-    const frontendPath = path.resolve(__dirname, '../Frontend/dist');
-    console.log('Serving frontend from:', frontendPath);
-    
-    // Serve static files
-    app.use(express.static(frontendPath));
-
-    // Serve index.html for all non-API routes (client-side routing)
-    app.get('*', (req, res) => {
-        if (!req.path.startsWith('/api')) {
-            res.sendFile(path.join(frontendPath, 'index.html'));
-        } else {
-            res.status(404).json({ message: 'API route not found' });
-        }
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(rootDir, "Frontend/dist")));
+  
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(rootDir, "Frontend/dist/index.html"));
     });
-}
+  }
 
 // 404 handler - only used if not in production mode
 if (process.env.NODE_ENV !== 'production') {
@@ -112,12 +106,16 @@ const startServer = async () => {
         await connectMongoDB();
         
         // Start the server
-        const server = app.listen(PORT, () => {
+        const server = app.listen(PORT, async () => {
             console.log(`Server is running in ${process.env.NODE_ENV || 'development'} mode`);
             console.log(`Server is running on port ${PORT}`);
             if (process.env.NODE_ENV === 'production') {
                 console.log(`Frontend is being served from: ${path.resolve(__dirname, '../Frontend/dist')}`);
             }
+            
+            // Open browser automatically
+            const open = (await import('open')).default;
+            open(`http://localhost:${PORT}`);
         });
 
         // Handle server shutdown gracefully
