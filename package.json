@@ -5,11 +5,7 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon Backend/server.js",
     "start": "NODE_ENV=production node Backend/server.js",
-    "build": "npm install && cd Frontend && npm install && npm install -g vite && npm run build && cd .. && cd Backend && npm install && cd ..",
-    "install-all": "npm install && npm install --prefix Frontend && npm install --prefix Backend",
-    "dev:frontend": "cd Frontend && npm run dev",
-    "dev:backend": "NODE_ENV=development nodemon Backend/server.js",
-    "dev:all": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\""
+    "build": "npm install && npm install --prefix Frontend && npm run build --prefix Frontend"
   },
   "keywords": [],
   "author": "",

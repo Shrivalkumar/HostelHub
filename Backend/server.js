@@ -19,74 +19,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
-// Security middleware
-app.use(helmet({
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: false
-}));
-
-// Enable compression
-app.use(compression());
-
-// Rate limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
-});
-app.use(limiter);
-
-// CORS configuration
-const corsOptions = {
-    origin: process.env.NODE_ENV === 'production' 
-        ? ['https://hostelhub-urdf.onrender.com', 'http://localhost:8000', 'http://localhost:5173']
-        : ['http://localhost:5173', 'http://localhost:8000'],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
-};
-app.use(cors(corsOptions));
-
-
 
 // Body parser middleware
 app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.urlencoded({ extended: true}));
 
-// Request logging middleware
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    console.log('Request Body:', req.body);
-    next();
-});
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-    res.status(200).json({ 
-        status: 'ok', 
-        timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development'
-    });
-});
 
 // API routes
 app.use("/api/sessions", sessionRoutes);
 
-// Serve frontend static files in production
-if(process.env.NODE_ENV === "production"){
-    app.use(express.static(path.join(rootDir, "Frontend/dist")));
-  
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(rootDir, "Frontend/dist/index.html"));
-    });
-  }
-
-// 404 handler - only used if not in production mode
-if (process.env.NODE_ENV !== 'production') {
-    app.use((req, res, next) => {
-        res.status(404).json({ message: 'Route not found' });
-    });
-}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -100,49 +41,16 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 8000;
 
-const startServer = async () => {
-    try {
-        // Connect to MongoDB
-        await connectMongoDB();
-        
-        // Start the server
-        const server = app.listen(PORT, async () => {
-            console.log(`Server is running in ${process.env.NODE_ENV || 'development'} mode`);
-            console.log(`Server is running on port ${PORT}`);
-            if (process.env.NODE_ENV === 'production') {
-                console.log(`Frontend is being served from: ${path.resolve(__dirname, '../Frontend/dist')}`);
-            }
-            
-            // Open browser automatically
-            const open = (await import('open')).default;
-            open(`http://localhost:${PORT}`);
-        });
-
-        // Handle server shutdown gracefully
-        process.on('SIGTERM', () => {
-            console.log('SIGTERM received. Shutting down gracefully...');
-            server.close(() => {
-                console.log('Server closed');
-                process.exit(0);
-            });
-        });
-
-    } catch (error) {
-        console.error('Failed to start server:', error);
-        process.exit(1);
-    }
-};
-
-// Handle uncaught exceptions
-process.on('uncaughtException', (error) => {
-    console.error('Uncaught Exception:', error);
-    process.exit(1);
-});
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-    process.exit(1);
-});
-
-startServer();
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(rootDir, "Frontend/dist")));
+  
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(rootDir, "Frontend/dist/index.html"));
+    });
+  }
+  
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT} http://localhost:${PORT}/`);
+    connectMongoDB(); // once our server is runnning we can connect out database
+  });
+  
